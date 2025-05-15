@@ -1,8 +1,7 @@
-# 📄 AWS Document Processing Service
+# 🌉 BhashaBridge – Serverless Document Processing with AWS
 
-This project is a serverless, AWS-based solution for automatically processing `.txt` documentation files. 
-Users securely upload documents using an AWS Transfer Family web endpoint. 
-A Lambda function is triggered upon file upload to process the document, and the result is stored in an output S3 bucket.
+**BhashaBridge** is a serverless AWS-based application for secure and automated processing of `.docx` documents.  
+Users upload files through an **AWS Transfer Family Web Endpoint**, which triggers a **Lambda** function that processes the file and saves the result to a dedicated output S3 bucket.
 
 ---
 
