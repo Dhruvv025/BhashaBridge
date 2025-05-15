@@ -1,27 +1,28 @@
-# 📄 AWS Document Translation Service
+# 📄 AWS Document Processing Service
 
-This project is a serverless AWS-based solution to automatically **translate documentation files** using various AWS services. It allows users to upload `.docx` documents to an S3 bucket, automatically processes and translates the content using AWS Lambda, and stores the translated documents in an output S3 bucket.
+This project is a serverless, AWS-based solution for automatically processing `.txt` documentation files. 
+Users securely upload documents using an AWS Transfer Family web endpoint. 
+A Lambda function is triggered upon file upload to process the document, and the result is stored in an output S3 bucket.
 
 ---
 
 ## 🧰 Tech Stack & AWS Services Used
 
-- **Amazon S3** – For file storage (input/output buckets)
-- **AWS Lambda** – To handle document translation logic
-- **Amazon Translate** – For translating the document content
-- **Amazon Cognito** – For user authentication and secure access
-- **AWS IAM** – For secure role-based access control
-- **AWS CloudWatch** – For monitoring and logging
-  
-![image](https://github.com/user-attachments/assets/5e4c49e6-7ea7-4108-9644-003e42887bde)
+- **Amazon S3** – For file storage (input/output)
+- **AWS Lambda** – Executes document processing logic
+- **AWS Transfer Family (Web Access)** – For secure file uploads
+- **AWS IAM** – Manages access control
+- **Amazon CloudWatch** – Monitors execution and logs
+
+---
 
 ## 🚀 Features
 
-- Upload `.docx` files via authenticated user
-- Automatically triggers Lambda function on file upload
-- Translates text using **Amazon Translate**
-- Saves translated document to a separate output S3 bucket
-- Fully serverless and scalable architecture
+- Upload `.txt` files via AWS Transfer Family Web Interface
+- Auto-triggers Lambda on file upload to the input bucket
+- Lambda handles file processing logic
+- Stores results in an output S3 bucket
+- Fully serverless architecture (scalable and low-maintenance)
 
 ---
 
@@ -32,56 +33,69 @@ This project is a serverless AWS-based solution to automatically **translate doc
 
 ---
 
-## 🔐 Authentication (Cognito)
+## 🔐 User Access via Transfer Family
 
-Amazon Cognito is used to manage user authentication and permissions. Only authenticated users can upload files to the input bucket.
+Users interact with the system via an AWS Transfer Family Web Endpoint. Each user is mapped to a scoped IAM role with permission to upload files only to the input bucket.
 
 ---
+![Screenshot 2025-05-15 111153](https://github.com/user-attachments/assets/8ddb6430-4580-4792-9bb9-348da08c659e)
+
+![Screenshot 2025-05-15 111726](https://github.com/user-attachments/assets/3bc90c15-d3d9-4b0a-9bff-50b74d89cc0a)
+
+![WhatsApp Image 2025-05-15 at 11 21 08_0e24b3f4](https://github.com/user-attachments/assets/feecbb07-3c8c-403c-b26c-79123ef045c1)
 
 ## 🛠️ How It Works
 
-1. **User Uploads a File** to `input-translate92` bucket (e.g., `.docx` file).
-2. **S3 Triggers Lambda Function** (`my-translator92`) via event.
-3. **Lambda Extracts Text** from the document and translate the text.
-4. **Lambda Saves Translated File** to `output-translate92` bucket.
-5. **User Downloads Translated File** from the output bucket.
+1. User uploads a `.txt` file to the input bucket via Transfer Family Web
+2. The S3 upload triggers the `my-translator92` Lambda function
+3. Lambda processes the document (e.g., extracts/edits content)
+4. Lambda writes the processed file to the output bucket
+5. User accesses the output via Transfer Family or another interface
 
 ---
 
 ## 📋 Prerequisites
 
 - AWS Account
-- Proper IAM roles with permissions to access:
-  - S3
-  - Lambda
-  - Translate
-  - CloudWatch
-- AWS CLI or AWS Console access
-- Optional: Frontend app or CLI to upload/download files
+- Two S3 Buckets:
+  - `input-translate92`
+  - `output-translate92`
+- IAM Roles:
+  - For Lambda (access to both buckets)
+  - For Transfer Family user access (input bucket only)
+- Lambda function configured with S3 trigger
+- AWS Transfer Family server (web enabled)
 
 ---
 
-## 📋 Setup Instructions
+## ⚙️ Setup Instructions
 
-1. **Create S3 Buckets**:  
+1. **Create S3 Buckets**
    - `input-translate92`
    - `output-translate92`
 
-2. **Create IAM Role** with required policies for Lambda to access S3 and Amazon Translate.
+2. **Set Up IAM Roles**
+   - Lambda role: S3 access for input/output buckets
+   - Transfer Family role: limited access to input bucket
 
-3. **Create and Deploy Lambda Function** (`my-translator92`) with trigger on `input-translate92`.
+3. **Deploy Lambda Function**
+   - Name: `my-translator92`
+   - Trigger: S3 event on `input-translate92`
 
-4. **Set Up Cognito User Pool** for authentication.
+4. **Configure AWS Transfer Family**
+   - Set up Web-enabled server
+   - Create user and link to IAM role and input bucket
 
-5. **Test Workflow**:
-   - Upload `.docx` to input bucket.
-   - Check output bucket for translated document.
+5. **Test Workflow**
+   - Upload a `.txt` file via Transfer Family Web
+   - Monitor processing in CloudWatch Logs
+   - Download processed file from output bucket
 
 ---
 
 ## 📈 Future Improvements
 
-- Add UI for uploading/downloading documents
-- Support for multiple file formats (PDF, TXT)
-- Language selection option
-- Email notifications when translation is complete
+- UI for monitoring and file management
+- Support for more file formats (e.g., PDF, DOCX)
+- Language selection or configuration support
+- Notification system (e.g., SNS or email on completion)
