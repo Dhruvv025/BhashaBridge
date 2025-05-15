@@ -38,6 +38,11 @@ A Lambda function is triggered upon file upload to process the document, and the
 Users interact with the system via an AWS Transfer Family Web Endpoint. Each user is mapped to a scoped IAM role with permission to upload files only to the input bucket.
 
 ---
+## 🔐 Architecture
+![image](https://github.com/user-attachments/assets/c49827e7-58c8-474b-af8a-f2f63e38e924)
+
+## Screenshots
+
 ![Screenshot 2025-05-15 111153](https://github.com/user-attachments/assets/8ddb6430-4580-4792-9bb9-348da08c659e)
 
 ![Screenshot 2025-05-15 111726](https://github.com/user-attachments/assets/3bc90c15-d3d9-4b0a-9bff-50b74d89cc0a)
